@@ -98,6 +98,6 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return getCliente().getApellidos()+", "+getCliente().getNombre()+"|"+getFecha()+"|"+getMonto()+getDistrito().getNombre()+"|"+getDireccion() ;
+        return getId_pedido()+"|"+Cliente.getUsuario() +"|"+ getFecha()+"|"+getMonto()+"|"+Distrito.getNombre()+"|"+getDireccion() ;
     }
 }
