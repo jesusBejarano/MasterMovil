@@ -2,19 +2,27 @@ package proveedor.pe.edu.upc.mastermovil;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
+import proveedor.pe.edu.upc.mastermovil.Model.Pedido;
+import proveedor.pe.edu.upc.mastermovil.task.ActualizarPedidoTask;
 import proveedor.pe.edu.upc.mastermovil.task.PedidoTask;
 
 public class MainActivity extends AppCompatActivity {
-
+    Pedido pedido;
     private ListView list;
+    Gson gson;
     ArrayAdapter<String> adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +33,29 @@ public class MainActivity extends AppCompatActivity {
         PedidoTask nuevaTarea = new PedidoTask(MainActivity.this,list);
         nuevaTarea.execute();
 
-        // ArrayList<String> arreglocadenas=new ArrayList<>();
-        //arreglocadenas.add("luis");
-        //arreglocadenas.add("jesus");
-        //new PedidoTask(MainActivity.this,lista).execute(json);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Object listChoice = list.getItemAtPosition(position) ;
+                // obtener el texto del item seleccionado
+                String sTexto = listChoice.toString();
+                // Texto que vamos a buscar
+                String sTextoBuscado = "|";
+                // obteninedo el numero entero
+                sTexto = sTexto.substring(0,sTexto.indexOf(sTextoBuscado));
 
-        //Inicializar el adaptador con la fuente de datos
-        //adaptador = new TareaArrayAdapter<Pedido>(this, DataSourse.Pedidos);
-        //adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arreglocadenas);
-        //lista.setAdapter(adaptador);
+                pedido = new Pedido();
+                pedido.setId_pedido(Integer.parseInt(sTexto));
+                 gson = new Gson();
+                String js = gson.toJson(pedido);
+
+                String json = gson.toJson(pedido);
+                Log.d("Json Cliente : ", json);
+
+                new ActualizarPedidoTask(MainActivity.this).execute(json);
+
+            }
+        });
     }
 
     @Override
@@ -58,8 +80,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void CRear(View view) {
-
-
-    }
 }

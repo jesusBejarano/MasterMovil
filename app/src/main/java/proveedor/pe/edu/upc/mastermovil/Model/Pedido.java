@@ -98,6 +98,15 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return getId_pedido()+"|"+Cliente.getUsuario() +"|"+ getFecha()+"|"+getMonto()+"|"+Distrito.getNombre()+"|"+getDireccion() ;
+        String resultado = null;
+        if((Cliente == null) || (Distrito == null)){
+            Distrito =new Distrito();
+            Cliente=new Cliente();
+            return getId_pedido()  +"|"+Cliente.getUsuario() != null ? Cliente.getUsuario() : ""  +"|"+ getFecha()+"|"+getMonto()+"|"+Distrito.getNombre()!=null?Distrito.getNombre():"" +"|"+getDireccion() ;
+        }
+        else {
+
+            return getId_pedido() + "|" + Cliente.getUsuario()  + "|" + getFecha() + "|" + getMonto() + "|" + Distrito.getNombre()  + "|" + getDireccion();
+        }
     }
 }
